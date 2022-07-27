@@ -17,6 +17,7 @@ namespace Shiny.Notifications
         readonly ILogger logger;
         readonly NotificationManager nativeManager;
 
+        public static bool EnableVibration { get; set; } = false;
 
         public ChannelManager(
             IRepository repository,
@@ -95,6 +96,9 @@ namespace Shiny.Notifications
             }
             if (uri != null)
                 native.SetSound(uri, attrBuilder.Build());
+
+            if (EnableVibration)
+                native.EnableVibration(true);
 
             this.nativeManager.CreateNotificationChannel(native);
             await this.repository.Set(channel.Identifier, channel);
